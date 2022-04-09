@@ -26,7 +26,7 @@ class Xhs extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = '小红书通知';
 
     /**
      * @var Client
