@@ -29,7 +29,7 @@ class XhsComment extends Model
     protected static function booted()
     {
         static::created(function ($comment)  {
-            static::notify('评论', $comment->content . "\t" . $comment->time . "\t" . $comment->nickname);
+            static::notify('评论', $comment->content . "\n\n" . $comment->time . "\n\n" . $comment->nickname);
         });
     }
 

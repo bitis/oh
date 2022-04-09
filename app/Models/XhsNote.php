@@ -27,7 +27,7 @@ class XhsNote extends Model
     protected static function booted()
     {
         static::created(function ($note)  {
-            static::notify($note->title, $note->desc . "\n[Link](https://www.xiaohongshu.com/discovery/item/{$note['x_id']})" . "\n" . $note->time . "\n" . $note->nickname);
+            static::notify($note->title, $note->desc . "\n\n[Link](https://www.xiaohongshu.com/discovery/item/{$note['x_id']})" . "\n\n" . $note->time . "\n\n" . $note->nickname);
         });
     }
 
