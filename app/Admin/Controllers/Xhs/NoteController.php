@@ -26,15 +26,15 @@ class NoteController extends AdminController
     {
         $grid = new Grid(new XhsNote());
 
-        $grid->column('ID', __('ID'));
-        $grid->column('X_ID', __('X ID'));
-        $grid->column('TITLE', __('TITLE'));
-        $grid->column('DESC', __('DESC'));
-        $grid->column('ISLIKED', __('ISLIKED'));
-        $grid->column('TYPE', __('TYPE'));
-        $grid->column('TIME', __('TIME'));
-        $grid->column('CREATED_AT', __('CREATED AT'));
-        $grid->column('UPDATED_AT', __('UPDATED AT'));
+        $grid->column('id', __('ID'));
+        $grid->column('x_id', __('X ID'));
+        $grid->column('title', __('TITLE'));
+        $grid->column('desc', __('DESC'));
+        $grid->column('isLiked', __('ISLIKED'));
+        $grid->column('type', __('TYPE'));
+        $grid->column('time', __('TIME'));
+        $grid->column('created_at', __('CREATED AT'));
+        $grid->column('updated_at', __('UPDATED AT'));
 
         return $grid;
     }
@@ -49,15 +49,15 @@ class NoteController extends AdminController
     {
         $show = new Show(XhsNote::findOrFail($id));
 
-        $show->field('ID', __('ID'));
-        $show->field('X_ID', __('X ID'));
-        $show->field('TITLE', __('TITLE'));
-        $show->field('DESC', __('DESC'));
-        $show->field('ISLIKED', __('ISLIKED'));
-        $show->field('TYPE', __('TYPE'));
-        $show->field('TIME', __('TIME'));
-        $show->field('CREATED_AT', __('CREATED AT'));
-        $show->field('UPDATED_AT', __('UPDATED AT'));
+        $show->field('id', __('ID'));
+        $show->field('x_id', __('X ID'));
+        $show->field('title', __('TITLE'));
+        $show->field('desc', __('DESC'));
+        $show->field('isLiked', __('ISLIKED'));
+        $show->field('type', __('TYPE'));
+        $show->field('time', __('TIME'));
+        $show->field('created_at', __('CREATED AT'));
+        $show->field('updated_at', __('UPDATED AT'));
 
         return $show;
     }
@@ -71,15 +71,15 @@ class NoteController extends AdminController
     {
         $form = new Form(new XhsNote());
 
-        $form->number('ID', __('ID'));
-        $form->text('X_ID', __('X ID'));
-        $form->text('TITLE', __('TITLE'));
-        $form->textarea('DESC', __('DESC'));
-        $form->text('ISLIKED', __('ISLIKED'));
-        $form->text('TYPE', __('TYPE'));
-        $form->text('TIME', __('TIME'));
-        $form->text('CREATED_AT', __('CREATED AT'));
-        $form->text('UPDATED_AT', __('UPDATED AT'));
+        $form->number('id', __('ID'));
+        $form->text('x_id', __('X ID'));
+        $form->text('title', __('TITLE'));
+        $form->textarea('desc', __('DESC'));
+        $form->text('isLiked', __('ISLIKED'));
+        $form->text('type', __('TYPE'));
+        $form->text('time', __('TIME'));
+        $form->text('created_at', __('CREATED AT'));
+        $form->text('updated_at', __('UPDATED AT'));
 
         return $form;
     }

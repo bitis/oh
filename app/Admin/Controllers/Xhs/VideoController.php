@@ -26,14 +26,14 @@ class VideoController extends AdminController
     {
         $grid = new Grid(new XhsVideo());
 
-        $grid->column('ID', __('ID'));
-        $grid->column('XSH_NOTE_ID', __('XSH NOTE ID'));
-        $grid->column('X_ID', __('X ID'));
-        $grid->column('HEIGHT', __('HEIGHT'));
-        $grid->column('WIDTH', __('WIDTH'));
-        $grid->column('URL', __('URL'));
-        $grid->column('CREATED_AT', __('CREATED AT'));
-        $grid->column('UPDATED_AT', __('UPDATED AT'));
+        $grid->column('id', __('ID'));
+        $grid->column('xsh_note_id', __('XSH NOTE ID'));
+        $grid->column('x_id', __('X ID'));
+        $grid->column('height', __('HEIGHT'));
+        $grid->column('width', __('WIDTH'));
+        $grid->column('url', __('URL'));
+        $grid->column('created_at', __('CREATED AT'));
+        $grid->column('updated_at', __('UPDATED AT'));
 
         return $grid;
     }
@@ -48,14 +48,14 @@ class VideoController extends AdminController
     {
         $show = new Show(XhsVideo::findOrFail($id));
 
-        $show->field('ID', __('ID'));
-        $show->field('XSH_NOTE_ID', __('XSH NOTE ID'));
-        $show->field('X_ID', __('X ID'));
-        $show->field('HEIGHT', __('HEIGHT'));
-        $show->field('WIDTH', __('WIDTH'));
-        $show->field('URL', __('URL'));
-        $show->field('CREATED_AT', __('CREATED AT'));
-        $show->field('UPDATED_AT', __('UPDATED AT'));
+        $show->field('id', __('ID'));
+        $show->field('xsh_note_id', __('XSH NOTE ID'));
+        $show->field('x_id', __('X ID'));
+        $show->field('height', __('HEIGHT'));
+        $show->field('width', __('WIDTH'));
+        $show->field('url', __('URL'));
+        $show->field('created_at', __('CREATED AT'));
+        $show->field('updated_at', __('UPDATED AT'));
 
         return $show;
     }
@@ -69,14 +69,14 @@ class VideoController extends AdminController
     {
         $form = new Form(new XhsVideo());
 
-        $form->number('ID', __('ID'));
-        $form->number('XSH_NOTE_ID', __('XSH NOTE ID'));
-        $form->text('X_ID', __('X ID'));
-        $form->number('HEIGHT', __('HEIGHT'));
-        $form->number('WIDTH', __('WIDTH'));
-        $form->url('URL', __('URL'));
-        $form->text('CREATED_AT', __('CREATED AT'));
-        $form->text('UPDATED_AT', __('UPDATED AT'));
+        $form->number('id', __('ID'));
+        $form->number('xsh_note_id', __('XSH NOTE ID'));
+        $form->text('x_id', __('X ID'));
+        $form->number('height', __('HEIGHT'));
+        $form->number('width', __('WIDTH'));
+        $form->url('url', __('URL'));
+        $form->text('created_at', __('CREATED AT'));
+        $form->text('updated_at', __('UPDATED AT'));
 
         return $form;
     }

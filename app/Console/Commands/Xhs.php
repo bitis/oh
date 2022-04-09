@@ -51,67 +51,107 @@ class Xhs extends Command
      */
     public function handle()
     {
-        $xhs = json_decode(file_get_contents('xid.json'));
+        $notes_id = $this->index('5d8b88a60000000001005ad3');
 
-        foreach ($xhs as $xid) {
+        foreach ($notes_id as $xid) {
             list($x_note, $x_comment) = $this->item($xid);
 
             $x_note['x_id'] = $xid;
-            $note = XhsNote::create($x_note);
-            if ($x_note['imageList']) {
-                foreach ($x_note['imageList'] as $image) {
-                    XhsImage::create(array_merge($image, ['xsh_note_id' => $note->id]));
-                }
-            }
 
-            if ($x_note['type'] == 'video') {
-                XhsVideo::create([
-                    'xsh_note_id' => $note->id,
-                    'x_id' => $x_note['video']['id'],
-                    'height' => $x_note['video']['height'],
-                    'width' => $x_note['video']['width'],
-                    'url' => $x_note['video']['url'],
-                ]);
+            if (!$note = XhsNote::where(['x_id' => $xid])->first()) {
+                $note = XhsNote::create($x_note);
+
+                if ($x_note['imageList']) {
+                    foreach ($x_note['imageList'] as $image) {
+                        XhsImage::create(array_merge($image, ['xsh_note_id' => $note->id]));
+                    }
+                }
+
+                if ($x_note['type'] == 'video') {
+                    XhsVideo::create([
+                        'xsh_note_id' => $note->id,
+                        'x_id' => $x_note['video']['id'],
+                        'height' => $x_note['video']['height'],
+                        'width' => $x_note['video']['width'],
+                        'url' => $x_note['video']['url'],
+                    ]);
+                }
             }
 
             if ($x_comment['comments']) {
 
                 foreach ($x_comment['comments'] as $comment) {
-                    $comment['parent_id'] = $note['id'];
-                    $comment['x_id'] = $comment['id'];
-                    if (!isset($comment['user']['nickname'])) {
-                        $comment['nickname'] = 'MASTER';
-                    } else {
-                        $comment['nickname'] = $comment['user']['nickname'];
-                        $comment['user_id'] = $comment['user']['id'];
+
+                    if (!$db_comment = XhsComment::where(['x_id' => $comment['id']])->first()) {
+                        $comment['parent_id'] = $note['id'];
+                        $comment['x_id'] = $comment['id'];
+                        if (!isset($comment['user']['nickname'])) {
+                            $comment['nickname'] = 'MASTER';
+                        } else {
+                            $comment['nickname'] = $comment['user']['nickname'];
+                            $comment['user_id'] = $comment['user']['id'];
+                        }
+                        $db_comment = XhsComment::create($comment);
                     }
-                    $db_comment = XhsComment::create($comment);
 
                     if ($comment['subComments']) {
                         foreach ($comment['subComments'] as $subComment) {
-                            $subComment['parent_id'] = $db_comment['id'];
-                            $subComment['x_id'] = $subComment['id'];
-                            $subComment['isSubComment'] = true;
-                            if (!isset($subComment['user']['nickname'])) {
-                                $subComment['nickname'] = 'MASTER';
-                            } else {
-                                $subComment['nickname'] = $subComment['user']['nickname'];
-                                $subComment['user_id'] = $subComment['user']['id'];
+                            if (!XhsComment::where(['x_id' => $comment['id']])->first()) {
+                                $subComment['parent_id'] = $db_comment['id'];
+                                $subComment['x_id'] = $subComment['id'];
+                                $subComment['isSubComment'] = true;
+                                if (!isset($subComment['user']['nickname'])) {
+                                    $subComment['nickname'] = 'MASTER';
+                                } else {
+                                    $subComment['nickname'] = $subComment['user']['nickname'];
+                                    $subComment['user_id'] = $subComment['user']['id'];
+                                }
+                                XhsComment::create($subComment);
                             }
-                            XhsComment::create($subComment);
                         }
                     }
                 }
             }
-            $this->info($note->time . "\t" .  $note->title);
+            $this->info($note->time . "\t" . $note->title);
             sleep(10);
         }
         return 0;
     }
 
+    /**
+     * 笔记详情
+     * @param $id
+     * @return array
+     */
     public function item($id)
     {
-        $response = $this->http->get("https://www.xiaohongshu.com/discovery/item/$id", [
+        $html = $this->request("https://www.xiaohongshu.com/discovery/item/$id");
+        $comments = Str::between($html, '"commentInfo":', ',"noteInfo"');
+        $note = Str::between($html, '"noteInfo":', ',"noteType"');
+
+        return [
+            json_decode($note, true),
+            json_decode($comments, true)
+        ];
+    }
+
+    /**
+     * 指定用户主页的笔记ID
+     * @param $id
+     * @return array
+     */
+    public function index($id)
+    {
+        $html = $this->request("https://www.xiaohongshu.com/user/profile/$id");
+
+        $notes = json_decode(Str::between($html, '"notesDetail":', ',"albumDetail":'), true);
+
+        return array_column($notes, 'id');
+    }
+
+    public function request($url)
+    {
+        $response = $this->http->get($url, [
             'headers' => [
                 'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
                 'accept-encoding' => 'gzip, deflate, br',
@@ -130,13 +170,7 @@ class Xhs extends Command
                 'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36'
             ]
         ]);
-        $json = Str::between($response->getBody()->getContents(), 'window.__INITIAL_SSR_STATE__=', '</script>');
-        $comments = Str::between($json, '"commentInfo":', ',"noteInfo"');
-        $note = Str::between($json, '"noteInfo":', ',"noteType"');
 
-        return [
-            json_decode($note, true),
-            json_decode($comments, true)
-        ];
+        return $response->getBody()->getContents();
     }
 }

@@ -26,18 +26,18 @@ class CommentController extends AdminController
     {
         $grid = new Grid(new XhsComment());
 
-        $grid->column('ID', __('ID'));
-        $grid->column('X_ID', __('X ID'));
-        $grid->column('PARENT_ID', __('PARENT ID'));
-        $grid->column('NICKNAME', __('NICKNAME'));
-        $grid->column('USER_ID', __('USER ID'));
-        $grid->column('ISSUBCOMMENT', __('ISSUBCOMMENT'));
-        $grid->column('CONTENT', __('CONTENT'));
-        $grid->column('LIKES', __('LIKES'));
-        $grid->column('ISLIKED', __('ISLIKED'));
-        $grid->column('TIME', __('TIME'));
-        $grid->column('CREATED_AT', __('CREATED AT'));
-        $grid->column('UPDATED_AT', __('UPDATED AT'));
+        $grid->column('id', __('ID'));
+        $grid->column('x_id', __('X ID'));
+        $grid->column('parent_id', __('PARENT ID'));
+        $grid->column('nickname', __('NICKNAME'));
+        $grid->column('user_id', __('USER ID'));
+        $grid->column('isSubComment', __('ISSUBCOMMENT'));
+        $grid->column('content', __('CONTENT'));
+        $grid->column('likes', __('LIKES'));
+        $grid->column('isLiked', __('ISLIKED'));
+        $grid->column('time', __('TIME'));
+        $grid->column('created_at', __('CREATED AT'));
+        $grid->column('updated_at', __('UPDATED AT'));
 
         return $grid;
     }
@@ -52,18 +52,18 @@ class CommentController extends AdminController
     {
         $show = new Show(XhsComment::findOrFail($id));
 
-        $show->field('ID', __('ID'));
-        $show->field('X_ID', __('X ID'));
-        $show->field('PARENT_ID', __('PARENT ID'));
-        $show->field('NICKNAME', __('NICKNAME'));
-        $show->field('USER_ID', __('USER ID'));
-        $show->field('ISSUBCOMMENT', __('ISSUBCOMMENT'));
-        $show->field('CONTENT', __('CONTENT'));
-        $show->field('LIKES', __('LIKES'));
-        $show->field('ISLIKED', __('ISLIKED'));
-        $show->field('TIME', __('TIME'));
-        $show->field('CREATED_AT', __('CREATED AT'));
-        $show->field('UPDATED_AT', __('UPDATED AT'));
+        $show->field('id', __('ID'));
+        $show->field('x_id', __('X ID'));
+        $show->field('parent_id', __('PARENT ID'));
+        $show->field('nickname', __('NICKNAME'));
+        $show->field('user_id', __('USER ID'));
+        $show->field('isSubComment', __('ISSUBCOMMENT'));
+        $show->field('content', __('CONTENT'));
+        $show->field('likes', __('LIKES'));
+        $show->field('isLiked', __('ISLIKED'));
+        $show->field('time', __('TIME'));
+        $show->field('created_at', __('CREATED AT'));
+        $show->field('updated_at', __('UPDATED AT'));
 
         return $show;
     }
@@ -77,18 +77,18 @@ class CommentController extends AdminController
     {
         $form = new Form(new XhsComment());
 
-        $form->number('ID', __('ID'));
-        $form->text('X_ID', __('X ID'));
-        $form->number('PARENT_ID', __('PARENT ID'));
-        $form->text('NICKNAME', __('NICKNAME'));
-        $form->text('USER_ID', __('USER ID'));
-        $form->text('ISSUBCOMMENT', __('ISSUBCOMMENT'));
-        $form->textarea('CONTENT', __('CONTENT'));
-        $form->number('LIKES', __('LIKES'));
-        $form->text('ISLIKED', __('ISLIKED'));
-        $form->text('TIME', __('TIME'));
-        $form->text('CREATED_AT', __('CREATED AT'));
-        $form->text('UPDATED_AT', __('UPDATED AT'));
+        $form->number('id', __('ID'));
+        $form->text('x_id', __('X ID'));
+        $form->number('parent_id', __('PARENT ID'));
+        $form->text('nickname', __('NICKNAME'));
+        $form->text('user_id', __('USER ID'));
+        $form->text('isSubComment', __('ISSUBCOMMENT'));
+        $form->textarea('content', __('CONTENT'));
+        $form->number('likes', __('LIKES'));
+        $form->text('isLiked', __('ISLIKED'));
+        $form->text('time', __('TIME'));
+        $form->text('created_at', __('CREATED AT'));
+        $form->text('updated_at', __('UPDATED AT'));
 
         return $form;
     }
