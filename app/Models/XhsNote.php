@@ -19,6 +19,17 @@ class XhsNote extends Model
         'time',
     ];
 
+    /**
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::created(function ($note)  {
+            $this->notify($note->title, $note->desc . "\n[Link](https://www.xiaohongshu.com/discovery/item/{$note['x_id']})" . "\n" . $note->time . "\n" . $note->nickname);
+        });
+    }
+
     public function images()
     {
         return $this->hasMany(XhsImage::class);
