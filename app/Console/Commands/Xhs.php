@@ -10,6 +10,7 @@ use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class Xhs extends Command
@@ -113,6 +114,7 @@ class Xhs extends Command
                 }
             }
             $this->info($note->time . "\t" . $note->title);
+            Log::info($note->time . "\t" . $note->title);
             sleep(10);
         }
         return 0;
