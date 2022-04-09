@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\DingTalkNotify;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class XhsNote extends Model
 {
-    use HasFactory;
+    use HasFactory, DingTalkNotify;
 
     protected $fillable = [
         'x_id',
@@ -26,7 +27,7 @@ class XhsNote extends Model
     protected static function booted()
     {
         static::created(function ($note)  {
-            $this->notify($note->title, $note->desc . "\n[Link](https://www.xiaohongshu.com/discovery/item/{$note['x_id']})" . "\n" . $note->time . "\n" . $note->nickname);
+            static::notify($note->title, $note->desc . "\n[Link](https://www.xiaohongshu.com/discovery/item/{$note['x_id']})" . "\n" . $note->time . "\n" . $note->nickname);
         });
     }
 
