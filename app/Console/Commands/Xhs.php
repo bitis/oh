@@ -193,8 +193,6 @@ class Xhs extends Command
     {
         $response = $this->http->get($url);
 
-        $this->info($url);
-
         return $response->getBody()->getContents();
     }
 
@@ -221,6 +219,7 @@ class Xhs extends Command
     protected function cookieHandle($setCookies)
     {
         $cookies = [];
+
         foreach ($setCookies as $setCookie) {
             list($k, $v) = explode('=', explode(';', $setCookie)[0]);
             $cookies[$k] = $v;
@@ -230,15 +229,11 @@ class Xhs extends Command
             $cache = Cache::get($this->cookieKey) ?? '[]';
             $cache = json_decode($cache, true);
 
-            VarDumper::dump($cache);
-            VarDumper::dump($cookies);
             try {
                 $this->cookies = array_merge($cache, $cookies);
             } catch (\Exception $exception) {
                 $this->error($exception->getMessage());
             }
-
-            $this->info(json_encode($this->cookies));
 
             Cache::put($this->cookieKey, json_encode($this->cookies));
         }
