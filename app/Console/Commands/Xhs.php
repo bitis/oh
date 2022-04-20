@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Traits\DingTalkNotify;
 use App\Models\XhsComment;
 use App\Models\XhsImage;
 use App\Models\XhsNote;
@@ -19,6 +20,8 @@ use Symfony\Component\VarDumper\VarDumper;
 
 class Xhs extends Command
 {
+
+    use DingTalkNotify;
     /**
      * The name and signature of the console command.
      *
@@ -99,10 +102,12 @@ class Xhs extends Command
 
             if (!$note = XhsNote::where(['x_id' => $xid])->first()) {
                 $note = XhsNote::create($x_note);
-
+                $notify = "[{$note->title}](https://www.xiaohongshu.com/discovery/item/{$note['x_id']})\n\n" . $note->desc . "\n\n";
                 if ($x_note['imageList']) {
                     foreach ($x_note['imageList'] as $image) {
                         XhsImage::create(array_merge($image, ['xsh_note_id' => $note->id]));
+
+                        $notify .= "![img](" . $image['url'] . ")";
                     }
                 }
 
@@ -114,7 +119,11 @@ class Xhs extends Command
                         'width' => $x_note['video']['width'],
                         'url' => $x_note['video']['url'],
                     ]);
+
+                    $notify .= "![img](" . $x_note['video']['url'] . ")";
                 }
+
+                self::notify($note->title, $notify);
             }
 
             if ($x_comment['comments']) {
