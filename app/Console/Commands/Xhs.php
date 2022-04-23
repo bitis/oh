@@ -105,7 +105,7 @@ class Xhs extends Command
                 $notify = "[{$note->title}](https://www.xiaohongshu.com/discovery/item/{$note['x_id']})\n\n" . $note->desc . "\n\n";
                 if ($x_note['imageList']) {
                     foreach ($x_note['imageList'] as $image) {
-                        XhsImage::create(array_merge($image, ['xsh_note_id' => $note->id]));
+                        XhsImage::create(array_merge($image, ['xhs_note_id' => $note->id]));
 
                         $notify .= "![img](" . $image['url'] . ")";
                     }

@@ -15,7 +15,7 @@ class CreateXhsImagesTable extends Migration
     {
         Schema::create('xhs_images', function (Blueprint $table) {
             $table->id();
-            $table->integer('xsh_note_id');
+            $table->integer('xhs_note_id');
             $table->string('fileId');
             $table->integer('height');
             $table->integer('width');
