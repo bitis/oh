@@ -24,6 +24,7 @@ class CreateXhsCommentsTable extends Migration
             $table->integer('likes');
             $table->boolean('isLiked');
             $table->string('time');
+            $table->boolean('notified');
             $table->string('created_at');
             $table->string('updated_at');
         });

@@ -21,6 +21,7 @@ class CreateXhsNotesTable extends Migration
             $table->boolean('isLiked');
             $table->string('type');
             $table->string('time');
+            $table->boolean('notified');
             $table->string('created_at');
             $table->string('updated_at');
         });
