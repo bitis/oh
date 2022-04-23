@@ -22,6 +22,7 @@ class Xhs extends Command
 {
 
     use DingTalkNotify;
+
     /**
      * The name and signature of the console command.
      *
@@ -94,6 +95,7 @@ class Xhs extends Command
     public function handle()
     {
         $notes_id = $this->index('5d8b88a60000000001005ad3');
+        $dingtalk = "https://oapi.dingtalk.com/robot/send?access_token=d7b86bbac8aca5a62df3d8e2a9dad9eea70e954e76e79d59fc7716145c7dd229";
 
         foreach ($notes_id as $xid) {
             list($x_note, $x_comment) = $this->item($xid);
@@ -102,15 +104,15 @@ class Xhs extends Command
 
             if (!$note = XhsNote::where(['x_id' => $xid])->first()) {
                 $note = XhsNote::create($x_note);
-                $notify = "[{$note->title}](https://www.xiaohongshu.com/discovery/item/{$note['x_id']})\n\n" . $note->desc . "\n\n";
+
+                $notify = "[{$note->title} Link: ](https://www.xiaohongshu.com/discovery/item/{$note['x_id']})\n\n" . $note->desc . "\n\n";
+
                 if ($x_note['imageList']) {
                     foreach ($x_note['imageList'] as $image) {
                         XhsImage::create(array_merge($image, ['xhs_note_id' => $note->id]));
-
-                        $notify .= "![img](" . $image['url'] . ")";
+                        $notify .= "![img](https:" . $image['url'] . ")\n\n";
                     }
                 }
-
                 if ($x_note['type'] == 'video') {
                     XhsVideo::create([
                         'xhs_note_id' => $note->id,
@@ -119,11 +121,30 @@ class Xhs extends Command
                         'width' => $x_note['video']['width'],
                         'url' => $x_note['video']['url'],
                     ]);
-
-                    $notify .= "![img](" . $x_note['video']['url'] . ")";
+                    $notify .= "\n\n[ 该笔记包含视频: ](" . $note->video['url'] . ")";
                 }
 
-                self::notify($note->title, $notify);
+                try {
+                    (new Client())->post($dingtalk, [
+                        'json' => [
+                            "msgtype" => "markdown",
+                            "at" => [
+                                "atMobiles" => [],
+                                "isAtAll" => false
+                            ],
+                            "markdown" => [
+                                "title" => $note->title . " " . $note->created_at,
+                                "text" => $notify . "\n\n" . $note->created_at,
+                            ]
+                        ]
+                    ]);
+
+                    $note->notified = 1;
+                    $note->save();
+
+                } catch (\Exception $exception) {
+                    Log::info($exception->getMessage());
+                }
             }
 
             if ($x_comment['comments']) {

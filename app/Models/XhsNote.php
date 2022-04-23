@@ -26,6 +26,6 @@ class XhsNote extends Model
 
     public function video()
     {
-        return $this->hasMany(XhsVideo::class);
+        return $this->hasOne(XhsVideo::class);
     }
 }

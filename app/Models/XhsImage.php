@@ -10,7 +10,7 @@ class XhsImage extends Model
     use HasFactory;
 
     protected $fillable = [
-        'xsh_note_id',
+        'xhs_note_id',
         'fileId',
         'height',
         'width',
