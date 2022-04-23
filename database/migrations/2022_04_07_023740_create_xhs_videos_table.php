@@ -15,7 +15,7 @@ class CreateXhsVideosTable extends Migration
     {
         Schema::create('xhs_videos', function (Blueprint $table) {
             $table->id();
-            $table->integer('xsh_note_id');
+            $table->integer('xhs_note_id');
             $table->string('x_id');
             $table->integer('height');
             $table->integer('width');

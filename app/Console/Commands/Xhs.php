@@ -113,7 +113,7 @@ class Xhs extends Command
 
                 if ($x_note['type'] == 'video') {
                     XhsVideo::create([
-                        'xsh_note_id' => $note->id,
+                        'xhs_note_id' => $note->id,
                         'x_id' => $x_note['video']['id'],
                         'height' => $x_note['video']['height'],
                         'width' => $x_note['video']['width'],
