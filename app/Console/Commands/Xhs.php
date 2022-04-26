@@ -10,13 +10,10 @@ use App\Models\XhsVideo;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\VarDumper\VarDumper;
 
 class Xhs extends Command
 {
@@ -94,8 +91,7 @@ class Xhs extends Command
      */
     public function handle()
     {
-        $notes_id = $this->index('5d8b88a60000000001005ad3');
-        $dingtalk = "https://oapi.dingtalk.com/robot/send?access_token=d7b86bbac8aca5a62df3d8e2a9dad9eea70e954e76e79d59fc7716145c7dd229";
+        $notes_id = $this->index(config('xhs.xhs_id'));
 
         foreach ($notes_id as $xid) {
             list($x_note, $x_comment) = $this->item($xid);
@@ -125,23 +121,9 @@ class Xhs extends Command
                 }
 
                 try {
-                    (new Client())->post($dingtalk, [
-                        'json' => [
-                            "msgtype" => "markdown",
-                            "at" => [
-                                "atMobiles" => [],
-                                "isAtAll" => false
-                            ],
-                            "markdown" => [
-                                "title" => $note->title . " " . $note->created_at,
-                                "text" => $notify . "\n\n" . $note->created_at,
-                            ]
-                        ]
-                    ]);
-
+                    self::notify($note->title . " " . $note->created_at, $notify . "\n\n" . $note->created_at);
                     $note->notified = 1;
                     $note->save();
-
                 } catch (\Exception $exception) {
                     Log::info($exception->getMessage());
                 }
@@ -161,6 +143,8 @@ class Xhs extends Command
                             $comment['user_id'] = $comment['user']['id'];
                         }
                         $db_comment = XhsComment::create($comment);
+
+                        self::notify($comment->nickname . ": " . $comment->content, $comment->nickname . ": " . $comment->content . "\n\n" . $comment->created_at);
                     }
 
                     if ($comment['subComments']) {
@@ -176,6 +160,7 @@ class Xhs extends Command
                                     $subComment['user_id'] = $subComment['user']['id'];
                                 }
                                 XhsComment::create($subComment);
+                                self::notify($subComment->nickname . ": " . $subComment->content, $subComment->nickname . ": " . $subComment->content . "\n\n" . $subComment->created_at);
                             }
                         }
                     }
