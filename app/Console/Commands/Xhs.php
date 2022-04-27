@@ -144,7 +144,7 @@ class Xhs extends Command
                         }
                         $db_comment = XhsComment::create($comment);
 
-                        self::notify($comment->nickname . ": " . $comment->content, $comment->nickname . ": " . $comment->content . "\n\n" . $comment->created_at);
+                        self::notify($comment['nickname'] . ": " . $comment['content'], $comment['nickname'] . ": " . $comment['content'] . "\n\n" . $comment['time']);
                     }
 
                     if ($comment['subComments']) {
@@ -160,7 +160,7 @@ class Xhs extends Command
                                     $subComment['user_id'] = $subComment['user']['id'];
                                 }
                                 XhsComment::create($subComment);
-                                self::notify($subComment->nickname . ": " . $subComment->content, $subComment->nickname . ": " . $subComment->content . "\n\n" . $subComment->created_at);
+                                self::notify($subComment['nickname'] . ": " . $subComment['content'], $subComment['nickname'] . ": " . $subComment['content'] . "\n\n" . $subComment['time']);
                             }
                         }
                     }
