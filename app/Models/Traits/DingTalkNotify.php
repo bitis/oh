@@ -8,17 +8,15 @@ use Illuminate\Support\Facades\Log;
 trait DingTalkNotify
 {
     static function notify($title, $content) {
-        $dingtalk = "https://oapi.dingtalk.com/robot/send?access_token=d7b86bbac8aca5a62df3d8e2a9dad9eea70e954e76e79d59fc7716145c7dd229";
+        $dingtalk = "https://oapi.dingtalk.com/robot/send?access_token=" . config('watch.dingtalk_token');
 
         try {
             (new Client)->post($dingtalk, [
                 'json' => [
                     "msgtype" => "markdown",
                     "at" => [
-                        "atMobiles" => [
-                            "15138674502"
-                        ],
-                        "isAtAll" => false
+                        "atMobiles" => [],
+                        "isAtAll" => true
                     ],
                     "markdown" => [
                         "title" => $title,

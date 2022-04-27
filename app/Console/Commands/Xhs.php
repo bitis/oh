@@ -91,7 +91,7 @@ class Xhs extends Command
      */
     public function handle()
     {
-        $notes_id = $this->index(config('xhs.xhs_id'));
+        $notes_id = $this->index(config('watch.xhs_id'));
 
         foreach ($notes_id as $xid) {
             list($x_note, $x_comment) = $this->item($xid);
@@ -198,7 +198,7 @@ class Xhs extends Command
     public function index($id)
     {
         $html = $this->request("https://www.xiaohongshu.com/user/profile/{$id}");
-
+        file_put_contents('a.html', $html);
         $notes = json_decode(Str::between($html, '"notesDetail":', ',"albumDetail":'), true);
 
         return array_column($notes, 'id');
