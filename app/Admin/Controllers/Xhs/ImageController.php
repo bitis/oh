@@ -31,7 +31,7 @@ class ImageController extends AdminController
         $grid->column('fileid', __('FILEID'));
         $grid->column('height', __('HEIGHT'));
         $grid->column('width', __('WIDTH'));
-        $grid->column('url', __('URL'));
+        $grid->column('url', __('URL'))->image();
         $grid->column('created_at', __('CREATED AT'));
         $grid->column('updated_at', __('UPDATED AT'));
 
