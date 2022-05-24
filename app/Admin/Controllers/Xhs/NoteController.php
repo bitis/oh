@@ -30,12 +30,16 @@ class NoteController extends AdminController
         $grid->column('x_id', __('X ID'));
         $grid->column('title', __('TITLE'));
         $grid->column('desc', __('DESC'));
+        $grid->column('images', __('IMAGE'))->display(function ($images) {
+            return array_column($images, 'url');
+        })->image();
         $grid->column('isLiked', __('ISLIKED'));
         $grid->column('type', __('TYPE'));
         $grid->column('time', __('TIME'))->sortable();
         $grid->column('created_at', __('CREATED AT'));
         $grid->column('updated_at', __('UPDATED AT'));
 
+        $grid->model()->orderBy('time', 'desc');
         return $grid;
     }
 
@@ -53,6 +57,9 @@ class NoteController extends AdminController
         $show->field('x_id', __('X ID'));
         $show->field('title', __('TITLE'));
         $show->field('desc', __('DESC'));
+        $show->images()->as(function ($images) {
+            if ($images) return array_column($images->toArray(), 'url');
+        })->image();
         $show->field('isLiked', __('ISLIKED'));
         $show->field('type', __('TYPE'));
         $show->field('time', __('TIME'));
