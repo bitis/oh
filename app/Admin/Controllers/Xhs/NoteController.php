@@ -26,13 +26,13 @@ class NoteController extends AdminController
     {
         $grid = new Grid(new XhsNote());
 
-        $grid->column('id', __('ID'));
+        $grid->column('id', __('ID'))->sortable();
         $grid->column('x_id', __('X ID'));
         $grid->column('title', __('TITLE'));
         $grid->column('desc', __('DESC'));
         $grid->column('isLiked', __('ISLIKED'));
         $grid->column('type', __('TYPE'));
-        $grid->column('time', __('TIME'));
+        $grid->column('time', __('TIME'))->sortable();
         $grid->column('created_at', __('CREATED AT'));
         $grid->column('updated_at', __('UPDATED AT'));
 
