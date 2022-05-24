@@ -20,7 +20,7 @@ trait DingTalkNotify
                     ],
                     "markdown" => [
                         "title" => $title,
-                        "text" => $content,
+                        "text" => $content . config('watch.dingtalk_keyword'),
                     ]
                 ]
             ]);
