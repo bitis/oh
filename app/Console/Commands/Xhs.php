@@ -135,6 +135,7 @@ class Xhs extends Command
 
                     if (!$db_comment = XhsComment::where(['x_id' => $comment['id']])->first()) {
                         $comment['parent_id'] = $note['id'];
+                        $comment['note_id'] = $note['id'];
                         $comment['x_id'] = $comment['id'];
                         if (!isset($comment['user']['nickname'])) {
                             $comment['nickname'] = 'MASTER';
@@ -151,6 +152,7 @@ class Xhs extends Command
                         foreach ($comment['subComments'] as $subComment) {
                             if (!XhsComment::where(['x_id' => $comment['id']])->first()) {
                                 $subComment['parent_id'] = $db_comment['id'];
+                                $subComment['xhs_note_id'] = $db_comment['xhs_note_id'];
                                 $subComment['x_id'] = $subComment['id'];
                                 $subComment['isSubComment'] = true;
                                 if (!isset($subComment['user']['nickname'])) {

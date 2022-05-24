@@ -28,4 +28,10 @@ class XhsNote extends Model
     {
         return $this->hasOne(XhsVideo::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(XhsComment::class);
+    }
+
 }

@@ -28,6 +28,7 @@ class CommentController extends AdminController
 
         $grid->column('id', __('ID'));
         $grid->column('x_id', __('X ID'));
+        $grid->column('xhs_note_id', __('NOTE ID'));
         $grid->column('parent_id', __('PARENT ID'));
         $grid->column('nickname', __('NICKNAME'));
         $grid->column('user_id', __('USER ID'));
@@ -38,6 +39,7 @@ class CommentController extends AdminController
         $grid->column('time', __('TIME'));
         $grid->column('created_at', __('CREATED AT'));
         $grid->column('updated_at', __('UPDATED AT'));
+        $grid->model()->orderBy('id', 'desc');
 
         return $grid;
     }

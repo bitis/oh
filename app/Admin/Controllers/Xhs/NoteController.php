@@ -66,6 +66,16 @@ class NoteController extends AdminController
         $show->field('created_at', __('CREATED AT'));
         $show->field('updated_at', __('UPDATED AT'));
 
+        $show->comments('评论', function ($comments) {
+
+            $comments->resource('/admin/xhs-comments');
+
+            $comments->id();
+            $comments->parent_id();
+            $comments->content();
+            $comments->isSubComment();
+            $comments->nickname();
+        });
         return $show;
     }
 
