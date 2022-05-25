@@ -19,8 +19,8 @@ trait DingTalkNotify
                         "isAtAll" => true
                     ],
                     "markdown" => [
-                        "title" => $title,
-                        "text" => $content . config('watch.dingtalk_keyword'),
+                        "title" => $title . " -- " . config('watch.dingtalk_keyword'),
+                        "text" => $content,
                     ]
                 ]
             ]);

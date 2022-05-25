@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class XiaomiSports extends Command
 {
