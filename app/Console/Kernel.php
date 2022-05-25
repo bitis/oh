@@ -16,7 +16,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command(Xhs::class)->everyThreeMinutes();
+        $schedule->command(Xhs::class)->everyThreeMinutes();
+
+        $schedule->call(function () {
+            $accounts = config('watch.XiaomiSportsAccounts');
+
+            foreach (explode(';', $accounts) as $account) {
+                $this->call("XiaomiSports $account");
+            }
+        })->dailyAt('8:01');
     }
 
     /**
