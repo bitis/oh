@@ -2,11 +2,15 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Traits\DingTalkNotify;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class XiaomiSports extends Command
 {
+    use DingTalkNotify;
+
     /**
      * The name and signature of the console command.
      *
@@ -70,8 +74,14 @@ class XiaomiSports extends Command
                 'data_json' => urldecode($data)
             ]
         ]);
+        $result = json_decode($response->getBody()->getContents(), true)['message'];
 
-        $this->info(json_decode($response->getBody()->getContents(), true)['message']);
+        if ($result == 'success') {
+            $notify = $this->argument('user') . "步数修改成功: " . $step;
+            self::notify($notify, $notify);
+        }
+
+        Log::info($result);
         return 0;
     }
 
