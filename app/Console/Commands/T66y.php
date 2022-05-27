@@ -38,7 +38,7 @@ class T66y extends Command
      */
     public function handle(Client $client)
     {
-        $response = $client->post('https://get.xunfs.com/app/listapp.php', [
+        $response = $client->post('http://get.xunfs.com/app/listapp.php', [
             'verify' => false,
             'headers' => [
                 'accept' => '*/*',
