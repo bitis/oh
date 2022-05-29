@@ -2,11 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Traits\DingTalkNotify;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 
 class T66y extends Command
 {
+    use DingTalkNotify;
+
     /**
      * The name and signature of the console command.
      *
@@ -38,7 +41,7 @@ class T66y extends Command
      */
     public function handle(Client $client)
     {
-        $response = $client->post('http://get.xunfs.com/app/listapp.php', [
+        $response = $client->post('https://get.xunfs.com/app/listapp.php', [
             'verify' => false,
             'headers' => [
                 'accept' => '*/*',
@@ -52,6 +55,12 @@ class T66y extends Command
         ]);
 
         $result = json_decode($response->getBody()->getContents(), true);
+
+        $content = "[{$result['url1']}]({$result['url1']})\n\n
+        [{$result['url2']}]({$result['url2']})\n\n
+        [{$result['url3']}]({$result['url3']})\n\n";
+
+        self::notify('1024 地址', $content);
 
         dd($result);
     }
