@@ -56,9 +56,7 @@ class T66y extends Command
 
         $result = json_decode($response->getBody()->getContents(), true);
 
-        $content = "[{$result['url1']}]({$result['url1']})\n\n
-        [{$result['url2']}]({$result['url2']})\n\n
-        [{$result['url3']}]({$result['url3']})\n\n";
+        $content = "url1: {$result['url1']} \n\n url2: {$result['url2']} \n\n url3: {$result['url3']}";
 
         self::notify('1024 地址', $content);
 
