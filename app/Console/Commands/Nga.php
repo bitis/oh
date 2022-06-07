@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\XhsImage;
+use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 
 class Nga extends Command
@@ -35,8 +37,9 @@ class Nga extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(Client $client)
     {
+
         return 0;
     }
 }
