@@ -16,8 +16,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(Xhs::class)->everyThreeMinutes();
-
         $schedule->call(function () {
             $accounts = config('watch.XiaomiSportsAccounts');
 
