@@ -59,22 +59,29 @@ class XiaomiSports extends Command
 
         $data = str_replace(['{-today-}', '{-step-}'], [$today, $step], $this->data);
 
-        $response = $this->client->post('https://api-mifit-cn2.huami.com/v1/data/band_data.json?&t=' . $t, [
-            'headers' => [
-                'apptoken' => $appToken,
-                'Content-Type' => 'application/x-www-form-urlencoded'
-            ],
-            'form_params' => [
-                'userid' => $userId,
-                'last_sync_data_time' => $t,
-                'device_type' => 0,
-                'last_deviceid' => 'E47D91FFFE0B477A',
-                'data_json' => urldecode($data)
-            ]
-        ]);
-        $result = json_decode($response->getBody()->getContents(), true)['message'];
+        do {
+            try {
+                $response = $this->client->post('https://api-mifit-cn2.huami.com/v1/data/band_data.json?&t=' . $t, [
+                    'headers' => [
+                        'apptoken' => $appToken,
+                        'Content-Type' => 'application/x-www-form-urlencoded'
+                    ],
+                    'form_params' => [
+                        'userid' => $userId,
+                        'last_sync_data_time' => $t,
+                        'device_type' => 0,
+                        'last_deviceid' => 'E47D91FFFE0B477A',
+                        'data_json' => urldecode($data)
+                    ]
+                ]);
+                $result = json_decode($response->getBody()->getContents(), true)['message'];
+                Log::info($result);
+                $needRetry = false;
+            } catch (\Exception $exception) {
+                $needRetry = true;
+            }
+        } while($needRetry);
 
-        Log::info($result);
         return 0;
     }
 
