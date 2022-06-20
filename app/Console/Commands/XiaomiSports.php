@@ -79,6 +79,7 @@ class XiaomiSports extends Command
                 $needRetry = false;
             } catch (\Exception $exception) {
                 $needRetry = true;
+                sleep(5);
             }
         } while($needRetry);
 
