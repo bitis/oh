@@ -1,3 +1,5 @@
 *
 !public/
+!iReader/
+!av/
 !.gitignore
