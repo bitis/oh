@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use ErrorException;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use PHPUnit\Exception;
@@ -103,10 +104,9 @@ class Sehuatang extends Command
                     }
 
                     $this->info($page . "\t" . $tid);
-                } catch (Exception $exception) {
+                } catch (ErrorException | Exception $exception) {
                     $this->info($exception->getMessage());
                     if ($tries--) goto retry;
-                    throw $exception;
                 }
 
             }
