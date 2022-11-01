@@ -22,3 +22,5 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
+Route::get('other/t66y', 'App\Http\Controllers\T66yController@index');

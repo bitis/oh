@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\T66yUrl;
 use App\Models\Traits\DingTalkNotify;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
@@ -54,12 +55,11 @@ class T66y extends Command
             ]
         ]);
 
-        $result = json_decode($response->getBody()->getContents(), true);
+        $result = $response->getBody()->getContents();
 
-        $content = "url1: {$result['url1']} \n\n url2: {$result['url2']} \n\n url3: {$result['url3']}";
-
-        self::notify('1024 地址', $content);
-
-        dd($result);
+        T66yUrl::updateOrCreate(
+            ['id' => 1],
+            ['result' => $result]
+        );
     }
 }
