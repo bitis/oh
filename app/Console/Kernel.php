@@ -23,6 +23,8 @@ class Kernel extends ConsoleKernel
                 $this->call("XiaomiSports $account");
             }
         })->dailyAt('8:01');
+
+        $schedule->call('t66y')->everyFiveMinutes();
     }
 
     /**
