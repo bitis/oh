@@ -45,23 +45,6 @@ class IReader extends Command
     public function __construct()
     {
         parent::__construct();
-
-        $cookieText = config('ireader.cookieText');
-        $cookieArr = [];
-        foreach (explode('; ', $cookieText) as $item) {
-            list($key, $val) = explode('=', $item);
-            $cookieArr[$key] = $val;
-        }
-
-        $cookies = CookieJar::fromArray($cookieArr, '.ireader.com.cn');
-
-        $this->client = new Client([
-            'debug' => false,
-            'cookies' => $cookies,
-            'headers' => [
-                'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36'
-            ]
-        ]);
     }
 
     /**
@@ -71,6 +54,9 @@ class IReader extends Command
      */
     public function handle()
     {
+
+        $this->init();
+
         $this->bookId = $this->argument('bookId');
 
         $chapters = $this->getChapterList();
@@ -218,5 +204,28 @@ class IReader extends Command
 wkhtmltopdf --footer-center 第[page]页 cover storage/app/iReader/$this->bookId/content/001.html toc storage/app/iReader/$this->bookId.html storage/app/iReader/$this->bookId.pdf
 EXEC;
         echo $exec;
+    }
+
+    /**
+     * @return void
+     */
+    public function init(): void
+    {
+        $cookieText = config('ireader.cookieText');
+        $cookieArr = [];
+        foreach (explode('; ', $cookieText) as $item) {
+            list($key, $val) = explode('=', $item);
+            $cookieArr[$key] = $val;
+        }
+
+        $cookies = CookieJar::fromArray($cookieArr, '.ireader.com.cn');
+
+        $this->client = new Client([
+            'debug' => false,
+            'cookies' => $cookies,
+            'headers' => [
+                'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36'
+            ]
+        ]);
     }
 }
