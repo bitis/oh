@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\T66y;
 use App\Console\Commands\Xhs;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -24,7 +25,7 @@ class Kernel extends ConsoleKernel
             }
         })->dailyAt('8:01');
 
-        $schedule->call('t66y')->everyFiveMinutes();
+        $schedule->command('t66y')->everyFiveMinutes();
     }
 
     /**

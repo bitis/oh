@@ -3,14 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Models\T66yUrl;
-use App\Models\Traits\DingTalkNotify;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 
 class T66y extends Command
 {
-    use DingTalkNotify;
-
     /**
      * The name and signature of the console command.
      *
@@ -61,5 +58,7 @@ class T66y extends Command
             ['id' => 1],
             ['result' => $result]
         );
+
+        return 0;
     }
 }
