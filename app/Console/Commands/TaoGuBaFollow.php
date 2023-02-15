@@ -3,11 +3,13 @@
 namespace App\Console\Commands;
 
 use App\Mail\TaoGuBa;
+use App\Models\Cookie;
 use App\Models\TaogGuBaReply;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -73,8 +75,6 @@ class TaoGuBaFollow extends Command
 //            'on_headers' => function (ResponseInterface $response) {
 //                $cookies = $response->getHeader('Set-Cookie');
 //                $this->cookieHandle($cookies);
-//                $this->refreshCookie = !$this->refreshCookie;
-//                if ($this->refreshCookie) $this->refreshCookies();
 //            }
         ]);
         $url = "https://www.taoguba.com.cn/user/blog/moreReply?pageNo=1&userID=2101931";
@@ -139,7 +139,7 @@ class TaoGuBaFollow extends Command
     public function cookie(): array
     {
         $cookies = [];
-        $cookieText = Cache::get('TGB_COOkIE');
+        $cookieText = Cookie::where('scope', 'TAOGUBA')->value('content');
         foreach (explode('; ', $cookieText) as $str) {
             list($k, $v) = explode('=', $str);
             $cookies[$k] = $v;
