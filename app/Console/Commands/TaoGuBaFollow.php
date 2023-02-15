@@ -2,10 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\TaoGuBa;
+use App\Models\TaogGuBaReply;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
@@ -92,19 +95,42 @@ class TaoGuBaFollow extends Command
 
             $replyHtml = $client->get($replyHref)->getBody()->getContents();
 
-            $subject = (new Crawler($replyHtml))->filter('#gioMsg_R_' . Str::after($replyHref, '#'))->attr('subject');
+            $replyId = Str::after($replyHref, '#');
+            $subject = (new Crawler($replyHtml))->filter('#gioMsg_R_' . $replyId)->attr('subject');
 
             $imageHref = '';
             if ($images = Str::of($subject)->matchAll('/(https:\/\/image.taoguba.com.cn\/img\/[^"]+)_max.png/')) {
                 foreach ($images as $image) {
                     $imageHref .= $image . "\n";
+
+                    Storage::put(basename($image), file_get_contents($image.'_max.png'));
                 }
                 $imageHref = trim($imageHref);
             }
 
-            $log = sprintf("%s 与 %s %s %s \n %s %s", $userName, $date, $gray, $from, $replyContent, $imageHref);
-            $this->info($log);
-            $this->newLine();
+            if (!$m_reply = TaogGuBaReply::where('reply_id', $replyId)->first()) {
+                $m_reply = TaogGuBaReply::create([
+                    'reply_id' => $replyId,
+                    'user_name' => $userName,
+                    'date' => $date,
+                    'from' => $from,
+                    'from_url' => $fromHref,
+                    'content' => $replyContent,
+                    'url' => $replyHref,
+                    'images' => $images,
+                    'original' => $subject ?? ''
+                ]);
+
+                $log = sprintf("%s 与 %s %s %s \n %s %s", $userName, $date, $gray, $from, $replyContent, $imageHref);
+                $this->info($log);
+                $this->newLine();
+            }
+            if (!$m_reply->notified) {
+                Mail::to(config('mail.recipient'))->send(new TaoGuBa($m_reply));
+                $m_reply->notified = 1;
+                $m_reply->save();
+            }
+
         });
 
         return 0;
