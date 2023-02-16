@@ -17,13 +17,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            $accounts = config('watch.XiaomiSportsAccounts');
-
-            foreach (explode(';', $accounts) as $account) {
-                $this->call("XiaomiSports $account");
-            }
-        })->dailyAt('8:01');
+//        $schedule->call(function () {
+//            $accounts = config('watch.XiaomiSportsAccounts');
+//
+//            foreach (explode(';', $accounts) as $account) {
+//                $this->call("XiaomiSports $account");
+//            }
+//        })->dailyAt('8:01');
 
         $schedule->command('t66y')->everyFiveMinutes();
         $schedule->command('TaoGuBa:Notify')->everyFiveMinutes();
