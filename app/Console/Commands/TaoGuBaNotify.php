@@ -84,7 +84,10 @@ class TaoGuBaNotify extends Command
 
         $crawler = new Crawler($html);
 
-        $crawler->filter('.blogReply')->each(function (Crawler $reply) use ($client) {
+        $crawler->filter('.blogReply')->each(function (Crawler $reply, $i) use ($client) {
+
+            if ($i > 2) return;
+
             $userName = $reply->filter('.blogReply-userName')->text();
             $date = $reply->filter('.blogReply-date')->text();
             $gray = $reply->filter('.blogReply-gray')->text();
@@ -130,7 +133,6 @@ class TaoGuBaNotify extends Command
                 $m_reply->notified = 1;
                 $m_reply->save();
             }
-
         });
 
         return 0;
