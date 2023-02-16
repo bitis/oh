@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
-class TaoGuBaFollow extends Command
+class TaoGuBaNotify extends Command
 {
     /**
      * The name and signature of the console command.

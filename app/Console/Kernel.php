@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('t66y')->everyFiveMinutes();
         $schedule->command('TaoGuBa:Notify')->everyFiveMinutes();
+        $schedule->command('Nga:Notify')->everyFiveMinutes();
     }
 
     /**

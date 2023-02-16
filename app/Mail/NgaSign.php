@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\TaogGuBaReply;
+use App\Models\NgaReply;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -11,23 +11,23 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Str;
 
-class TaoGuBa extends Mailable
+class NgaSign extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * @var TaogGuBaReply
-     */
-    public TaogGuBaReply $reply;
+
+    public string $author;
+    public string $sign;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(TaogGuBaReply $reply)
+    public function __construct($author, $sign)
     {
-        $this->reply = $reply;
+        $this->author = $author;
+        $this->sign = $sign;
     }
 
     /**
@@ -38,7 +38,7 @@ class TaoGuBa extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: $this->reply->user_name . '：' . Str::substr($this->reply->content, 0, 15),
+            subject: $this->author . '：' . Str::substr($this->sign, 0, 15)
         );
     }
 
@@ -50,7 +50,7 @@ class TaoGuBa extends Mailable
     public function content()
     {
         return new Content(
-            view: 'mail.taoguba'
+            view: 'mail.ngasign'
         );
     }
 

@@ -15,7 +15,8 @@
         "laravel/framework": "^9.43",
         "laravel/sanctum": "^2.8",
         "laravel/tinker": "^2.5",
-        "tightenco/ziggy": "^1.0"
+        "tightenco/ziggy": "^1.0",
+        "ext-iconv": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
