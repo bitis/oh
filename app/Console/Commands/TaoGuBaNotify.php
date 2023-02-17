@@ -86,7 +86,7 @@ class TaoGuBaNotify extends Command
 
         $crawler->filter('.blogReply')->each(function (Crawler $reply, $i) use ($client) {
 
-            if ($i > 2) return;
+            if ($i > 1) return;
 
             $userName = $reply->filter('.blogReply-userName')->text();
             $date = $reply->filter('.blogReply-date')->text();
