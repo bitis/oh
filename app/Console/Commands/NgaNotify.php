@@ -140,8 +140,8 @@ class NgaNotify extends Command
                 $m_reply = NgaReply::create([
                     'reply_id' => $content['__P']['pid'],
                     'content' => $content['__P']['content'],
-                    'author' => $content['author'],
-                    'authorid' => $content['authorid'],
+                    'author' => $content['__P']['author'],
+                    'authorid' => $content['__P']['authorid'],
                     'subject' => $content['subject'],
                     'subject_id' => $content['__P']['tid'],
                     'postdate' => date('Y-m-d H:i:s', $content['__P']['postdate']),
