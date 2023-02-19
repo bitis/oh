@@ -8,12 +8,9 @@ use App\Models\TaogGuBaReply;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
 class TaoGuBaNotify extends Command
@@ -90,7 +87,7 @@ class TaoGuBaNotify extends Command
 
             $userName = $reply->filter('.blogReply-userName')->text();
             $date = $reply->filter('.blogReply-date')->text();
-            $gray = $reply->filter('.blogReply-gray')->text();
+//            $gray = $reply->filter('.blogReply-gray')->text();
             $from = $reply->filter('.blogReply-from>a')->text();
             $replyContent = $reply->filter('.blogReply-subinfo')->text();
             $fromHref = "https://www.taoguba.com.cn/" . $reply->filter('.blogReply-from>a')->attr('href');
@@ -124,8 +121,8 @@ class TaoGuBaNotify extends Command
                     'original' => $subject ?? ''
                 ]);
 
-                $log = sprintf("%s 与 %s %s %s \n %s %s", $userName, $date, $gray, $from, $replyContent, $imageHref);
-                $this->info($log);
+//                $log = sprintf("%s 与 %s %s %s \n %s %s", $userName, $date, $gray, $from, $replyContent, $imageHref);
+//                $this->info($log);
                 $this->newLine();
             }
             if (!$m_reply->notified) {
