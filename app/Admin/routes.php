@@ -12,6 +12,7 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index')->name('home');
+    $router->resource('cookies', CookieController::class);
     $router->resource('xhs-notes', Xhs\NoteController::class);
     $router->resource('xhs-images', Xhs\ImageController::class);
     $router->resource('xhs-videos', Xhs\VideoController::class);
