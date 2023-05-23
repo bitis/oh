@@ -8,7 +8,7 @@ class Image extends Api
 {
     public array $option = [];
 
-    public $gateway = 'https://mtest.eycard.cn:4443/AG_MerchantManagementSystem_Core/agent/api/imgUpl';
+    public string $gateway = 'https://mtest.eycard.cn:4443/AG_MerchantManagementSystem_Core/agent/api/imgUpl';
 
     /**
      * 图片类型
@@ -36,4 +36,38 @@ class Image extends Api
         '20' => '持清算授权书（选填）',
         '21' => '特殊行业许可证（选填）'
     ];
+
+    /**
+     * 请求配置
+     *
+     * @param array $options
+     * @return static
+     */
+    public function setOptions(array $options): Api
+    {
+        $options = array_merge($this->defaultOption, $options);
+
+        $data = $this->getSignContent($options);
+
+        $options['MAC'] = strtoupper(md5($data));
+
+        $tmp = [];
+        foreach ($options as $k => $v) {
+            if ($k == 'file') continue;
+            $tmp[] = [
+                'name' => $k,
+                'contents' => $v,
+            ];
+        }
+
+        $tmp_files[] = [
+            'name' => 'fileName',
+            'contents' => base64_encode($options['file']->getContent()),
+            'filename' => $options['file']->getClientOriginalName()
+        ];
+
+        $this->option = array_merge($tmp, $tmp_files);;
+
+        return $this;
+    }
 }
